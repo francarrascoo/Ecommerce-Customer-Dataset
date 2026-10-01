@@ -36,14 +36,21 @@ Ecommerce-Customer-Dataset/
 
 ## Cómo usarlo
 
-**Requisitos:** Python 3.12 y las librerías listadas en [`requirements.txt`](requirements.txt)
-(`pandas`, `numpy`, `matplotlib`, `scikit-learn` y `jupyter`). Para verificar la versión
-instalada de una librería puntual, ejecutar `import <lib>; print(<lib>.__version__)` como se
-indica en la primera celda de cada notebook.
+**Requisitos:** Python 3.12 y las versiones exactas fijadas en [`requirements.txt`](requirements.txt)
+(pandas 2.3.3, numpy 2.0.2, scipy 1.15.3, matplotlib 3.9.4, scikit-learn 1.6.1 y jupyter 1.1.1).
+Se recomienda instalarlas en un entorno virtual, para no mezclarlas con otras versiones del
+sistema:
 
 ```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+Aun con las mismas versiones, el Random Forest puede variar en el tercer decimal entre sistemas
+operativos (macOS y Linux usan librerías de cálculo numérico distintas), así que al volver a
+ejecutar un notebook en otro equipo pueden aparecer diferencias mínimas respecto de las cifras
+del texto.
 
 **Ejecución:** abrir y correr cada notebook de punta a punta desde la carpeta `notebooks/`
 (es la carpeta de trabajo que esperan las rutas relativas como `../data/...`):
@@ -59,7 +66,8 @@ jupyter notebook
 - [`preprocesamiento.ipynb`](notebooks/preprocesamiento.ipynb) — agrega ingeniería de
   características y arma los pipelines de `scikit-learn` que dejan los datos listos para
   modelar.
-- [`modelamiento.ipynb`](notebooks/modelamiento.ipynb) — pasos 2 y 3 del laboratorio: entrena y
+- [`modelamiento.ipynb`](notebooks/modelamiento.ipynb) — pasos 2 y 3 del laboratorio: ajusta los
+  hiperparámetros con validación cruzada (`GridSearchCV` y `RandomizedSearchCV`), y entrena y
   evalúa una regresión logística y un Random Forest para clasificar el abandono, y una regresión
   lineal y un Random Forest para estimar el saldo.
 - [`clustering.ipynb`](notebooks/clustering.ipynb) — actividad 2.3.2: agrupa a los clientes con
@@ -72,10 +80,17 @@ Los tres notebooks son autocontenidos: cada uno reconstruye lo que necesita desd
 
 | Problema | Modelo final | Resultado en prueba | Línea base |
 |---|---|---|---|
-| Clasificación (`Exited`) | Random Forest | accuracy 0,835 · recall 0,64 · F1 0,61 | recall 0 (predice siempre "se mantiene") |
-| Regresión (`Balance`) | Random Forest | MAE 41.576 · R² 0,31 | MAE 57.091 (predice siempre el promedio) |
+| Clasificación (`Exited`) | Random Forest (umbral 0,35) | ROC-AUC 0,862 · PR-AUC 0,703 · recall 0,60 · precisión 0,65 · F1 0,62 | recall 0 (predice siempre "se mantiene") |
+| Regresión (`Balance`) | Random Forest | MAE 41.230 · R² 0,33 | MAE 54.786 (predice siempre la mediana) |
+
+En los dos problemas, los hiperparámetros, el modelo y (en clasificación) el umbral se eligieron
+con validación cruzada de 5 partes sobre el conjunto de entrenamiento; la prueba se usó una sola
+vez, al final. En clasificación, el Random Forest supera a la regresión logística en las 5
+particiones (ROC-AUC 0,859 contra 0,848; prueba t pareada corregida, p = 0,02), pero por poco: lo
+que realmente define cuántos abandonos se detectan es el umbral. Los modelos se entrenan sin
+`class_weight='balanced'` para que sus probabilidades queden calibradas.
 
 El R² de regresión está inflado por un probable sesgo de muestreo (ningún cliente de Alemania
-tiene saldo 0): sin la variable de país, el R² del Random Forest cae de 0,31 a 0,11, y la estimación
-honesta es que el modelo explica entre un 11% y un 19% del saldo. El
+tiene saldo 0): sin la variable de país, el R² del Random Forest cae de 0,32 a 0,13 en validación
+cruzada, y la estimación honesta es que el modelo explica entre un 13% y un 21% del saldo. El
 detalle e interpretación de cada resultado está en [`modelamiento.ipynb`](notebooks/modelamiento.ipynb).
