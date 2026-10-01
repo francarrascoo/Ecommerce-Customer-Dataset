@@ -37,7 +37,8 @@ Ecommerce-Customer-Dataset/
 ## Cómo usarlo
 
 **Requisitos:** Python 3.12 y las versiones exactas fijadas en [`requirements.txt`](requirements.txt)
-(pandas 2.3.3, numpy 2.0.2, scipy 1.15.3, matplotlib 3.9.4, scikit-learn 1.6.1 y jupyter 1.1.1).
+(pandas 2.3.3, numpy 2.0.2, scipy 1.15.3, matplotlib 3.9.4, scikit-learn 1.6.1, kneed 0.8.6 y
+jupyter 1.1.1).
 Se recomienda instalarlas en un entorno virtual, para no mezclarlas con otras versiones del
 sistema:
 
@@ -81,7 +82,7 @@ Los tres notebooks son autocontenidos: cada uno reconstruye lo que necesita desd
 
 | Problema | Modelo final | Resultado en prueba | Línea base |
 |---|---|---|---|
-| Clasificación (`Exited`) | Random Forest (umbral 0,35) | ROC-AUC 0,862 · PR-AUC 0,703 · recall 0,60 · precisión 0,65 · F1 0,62 | recall 0 (predice siempre "se mantiene") |
+| Clasificación (`Exited`) | Random Forest (umbral 0,25) | ROC-AUC 0,862 · PR-AUC 0,703 · recall 0,71 · precisión 0,55 · F1 0,62 | recall 0 (predice siempre "se mantiene") |
 | Regresión (`Balance`) | Random Forest | MAE 41.230 · R² 0,33 | MAE 54.786 (predice siempre la mediana) |
 
 En los dos problemas, los hiperparámetros, el modelo y (en clasificación) el umbral se eligieron
