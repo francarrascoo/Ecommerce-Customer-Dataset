@@ -71,8 +71,9 @@ jupyter notebook
   evalúa una regresión logística y un Random Forest para clasificar el abandono, y una regresión
   lineal y un Random Forest para estimar el saldo.
 - [`clustering.ipynb`](notebooks/clustering.ipynb) — actividad 2.3.2: agrupa a los clientes con
-  K-Means (K elegido con el método del codo y el coeficiente de Silhouette), visualiza los grupos
-  con PCA e interpreta el perfil de negocio de cada segmento.
+  K-Means (K elegido con el método del codo y el coeficiente de Silhouette, con 300 inicializaciones
+  para que el resultado no dependa de la semilla), visualiza los grupos con PCA e interpreta el
+  perfil de negocio de cada segmento.
 
 Los tres notebooks son autocontenidos: cada uno reconstruye lo que necesita desde el CSV crudo.
 
