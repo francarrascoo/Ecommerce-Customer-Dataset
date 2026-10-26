@@ -25,12 +25,14 @@ Ecommerce-Customer-Dataset/
 │   └── ecommerce_customer_data.csv    — dataset crudo (10.000 filas)
 ├── docs/
 │   ├── 2.2.2_Laboratorio_Regresion_y_Clasificacion.pdf  — guía de este laboratorio
-│   └── 2.3.2_Guia_Clustering.pdf                        — guía de la actividad de clustering
+│   ├── 2.3.2_Guia_Clustering.pdf                        — guía de la actividad de clustering
+│   └── 3.1.2_Guia_Tuning_ScikitLearn.pdf                — guía de la actividad de ajuste de hiperparámetros
 ├── notebooks/
 │   ├── analisis_exploratorio.ipynb    — Fase 2 CRISP-DM: comprensión de los datos (EDA)
 │   ├── preprocesamiento.ipynb         — Fase 3 CRISP-DM: preparación de datos
 │   ├── modelamiento.ipynb             — Fases 4 y 5 CRISP-DM: modelado y evaluación
-│   └── clustering.ipynb               — Actividad 2.3.2: segmentación con K-Means y PCA
+│   ├── clustering.ipynb               — Actividad 2.3.2: segmentación con K-Means y PCA
+│   └── ajuste_hiperparametros.ipynb   — Actividad 3.1.2: GridSearchCV y RandomizedSearchCV
 └── images/                            — figuras exportadas por los notebooks
 ```
 
@@ -75,8 +77,13 @@ jupyter notebook
   K-Means (K elegido con el método del codo y el coeficiente de Silhouette, con 300 inicializaciones
   para que el resultado no dependa de la semilla), visualiza los grupos con PCA e interpreta el
   perfil de negocio de cada segmento.
+- [`ajuste_hiperparametros.ipynb`](notebooks/ajuste_hiperparametros.ipynb) — actividad 3.1.2:
+  ajusta un árbol de decisión para el abandono con `GridSearchCV` (F1 en prueba de 0,485 a 0,620
+  frente al árbol por defecto) y una regresión Ridge para el saldo con `RandomizedSearchCV`
+  (20 iteraciones × 5 pliegues = 100 entrenamientos, contra 2.500 de una grilla equivalente), que
+  no mejora al modelo por defecto porque el límite está en los datos.
 
-Los tres notebooks son autocontenidos: cada uno reconstruye lo que necesita desde el CSV crudo.
+Los notebooks son autocontenidos: cada uno reconstruye lo que necesita desde el CSV crudo.
 
 ## Resultados
 
